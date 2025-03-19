@@ -6,8 +6,9 @@
 # to globus-connect created by John Graham
 
 FROM rockylinux:9
-LABEL MAINTAINER Nadya Williams <nwilliams@ucsd.edu>
-LABEL CONTRIBUTER Kyle Krick <kkrick@sdsu.edu>
+LABEL MAINTAINER="Nadya Williams <nwilliams@ucsd.edu>"
+LABEL CONTRIBUTER="Kyle Krick <kkrick@sdsu.edu>"
+LABEL CONTRIBUTER="Joshua Agar <jca92@drexel.edu>"
 
 VOLUME /home/gridftp/globus_config
 VOLUME /home/gridftp/data 
@@ -51,5 +52,8 @@ CMD ["chmod -R 777 /shared-data"]
 # Use the entrypoint script
 ENTRYPOINT ["./entrypoint.sh"]
 
+# globus-connect-server-setup script needs these
+ENV HOME=/root
+ENV TERM=xterm
 
 
