@@ -22,3 +22,7 @@ persistence:
     enabled: true
     size: 1Gi
     storageClass: rook-cephfs
+
+globus:
+  endpointName: "myep"
+  currentUser: "gridftp"

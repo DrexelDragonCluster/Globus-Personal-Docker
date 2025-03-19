@@ -19,17 +19,17 @@
              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
              imagePullPolicy: {{ .Values.image.pullPolicy }}
              env:
-               - name: DataPath
-                 value: {{ .Values.dataPath }}
-               - name: ConfigPath
-                 value: {{ .Values.configPath }}
+               - name: GLOBUS_ENDPOINT_NAME
+                 value: {{ .Values.globus.endpointName }}
+               - name: CURRENT_USER
+                 value: {{ .Values.globus.currentUser }}
                - name: START_GLOBUS
                  value: "true"
              volumeMounts:
                - name: config-volume
-                 mountPath: /home/{{ .Values.currentUser }}/globus_config
+                 mountPath: /home/{{ .Values.globus.currentUser }}/globus_config
                - name: data-volume
-                 mountPath: /home/{{ .Values.currentUser }}/data
+                 mountPath: /home/{{ .Values.globus.currentUser }}/data
          volumes:
            - name: config-volume
              persistentVolumeClaim:
