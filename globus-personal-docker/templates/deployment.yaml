@@ -1,39 +1,39 @@
-   apiVersion: apps/v1
-   kind: Deployment
-   metadata:
-     name: {{ include "globus-personal-docker.fullname" . }}
-     labels:
-       app: {{ include "globus-personal-docker.name" . }}
-   spec:
-     replicas: 1
-     selector:
-       matchLabels:
-         app: {{ include "globus-personal-docker.name" . }}
-     template:
-       metadata:
-         labels:
-           app: {{ include "globus-personal-docker.name" . }}
-       spec:
-         containers:
-           - name: {{ .Chart.Name }}
-             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-             imagePullPolicy: {{ .Values.image.pullPolicy }}
-             env:
-               - name: GLOBUS_ENDPOINT_NAME
-                 value: {{ .Values.globus.endpointName }}
-               - name: CURRENT_USER
-                 value: {{ .Values.globus.currentUser }}
-               - name: START_GLOBUS
-                 value: "true"
-             volumeMounts:
-               - name: config-volume
-                 mountPath: /home/{{ .Values.globus.currentUser }}/globus_config
-               - name: data-volume
-                 mountPath: /home/{{ .Values.globus.currentUser }}/data
-         volumes:
-           - name: config-volume
-             persistentVolumeClaim:
-               claimName: {{ include "globus-personal-docker.fullname" . }}-config
-           - name: data-volume
-             persistentVolumeClaim:
-               claimName: {{ include "globus-personal-docker.fullname" . }}-data
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "globus-personal-docker.fullname" . }}
+  labels:
+    app: {{ include "globus-personal-docker.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "globus-personal-docker.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "globus-personal-docker.name" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: GLOBUS_ENDPOINT_NAME
+              value: {{ .Values.globus.endpointName }}
+            - name: CURRENT_USER
+              value: {{ .Values.globus.currentUser }}
+            - name: START_GLOBUS
+              value: "true"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /home/{{ .Values.globus.currentUser }}/globus_config
+            - name: data-volume
+              mountPath: /home/{{ .Values.globus.currentUser }}/data
+      volumes:
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: {{ include "globus-personal-docker.fullname" . }}-config
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ include "globus-personal-docker.fullname" . }}-data
