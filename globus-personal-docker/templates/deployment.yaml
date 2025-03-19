@@ -1,0 +1,39 @@
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: {{ include "globus-personal-docker.fullname" . }}
+     labels:
+       app: {{ include "globus-personal-docker.name" . }}
+   spec:
+     replicas: 1
+     selector:
+       matchLabels:
+         app: {{ include "globus-personal-docker.name" . }}
+     template:
+       metadata:
+         labels:
+           app: {{ include "globus-personal-docker.name" . }}
+       spec:
+         containers:
+           - name: {{ .Chart.Name }}
+             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+             imagePullPolicy: {{ .Values.image.pullPolicy }}
+             env:
+               - name: DataPath
+                 value: {{ .Values.dataPath }}
+               - name: ConfigPath
+                 value: {{ .Values.configPath }}
+               - name: START_GLOBUS
+                 value: "true"
+             volumeMounts:
+               - name: config-volume
+                 mountPath: /home/{{ .Values.currentUser }}/globus_config
+               - name: data-volume
+                 mountPath: /home/{{ .Values.currentUser }}/data
+         volumes:
+           - name: config-volume
+             persistentVolumeClaim:
+               claimName: {{ include "globus-personal-docker.fullname" . }}-config
+           - name: data-volume
+             persistentVolumeClaim:
+               claimName: {{ include "globus-personal-docker.fullname" . }}-data
