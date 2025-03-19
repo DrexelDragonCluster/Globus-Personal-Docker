@@ -25,6 +25,13 @@ spec:
               value: {{ .Values.globus.currentUser }}
             - name: START_GLOBUS
               value: "true"
+          resources:
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+            requests:
+              cpu: "2"
+              memory: "4Gi"
           volumeMounts:
             - name: config-volume
               mountPath: /home/{{ .Values.globus.currentUser }}/globus_config
